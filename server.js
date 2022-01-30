@@ -11,14 +11,14 @@ server.use(express.json());
 server.use;
 server.use(require("./routes/customer"));
 server.use(require("./routes/task"));
+server.use(require("./routes/files"));
 server.use("/documents", require("./routes/ai"));
-server.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+server.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
+  
+
 });
 const databaseConnection = require("./connection");
 
