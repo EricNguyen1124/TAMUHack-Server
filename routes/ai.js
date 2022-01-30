@@ -1,5 +1,7 @@
 const express = require("express");
 const multer = require("multer");
+const databaseObject = require("../connection");
+// const ObjectId = re;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public");
@@ -33,10 +35,21 @@ aiRoute.post(
   "/upload_document/:customerId",
   upload.single("file"),
   async (req, res) => {
+    let dbConnectToCollection = databaseObject.getDb();
     const { fileName, customerId } = req.params;
     const file = req.file;
     try {
       const result = await uploadFile(file.originalname, customerId);
+      // updating the field for that user
+
+      dbConnectToCollection.collection("Customers").updateOne(
+        { _id: customerId },
+        {
+          $set: {
+            filename: customerId + file.originalname,
+          },
+        }
+      );
       return res.json({ data: "upload file done!" });
     } catch (e) {
       return res.json({ message: e });
