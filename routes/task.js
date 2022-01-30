@@ -25,8 +25,6 @@ customerRouter.route("/tasks/update/:id").post(async function(req,response) {
     [
         { $set: {done: { $not: "$done"}}}
     ])
-    const fuck = await checkAddress()
-    console.log({fuck})
 });
 
 
