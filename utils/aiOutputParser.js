@@ -1,6 +1,5 @@
 const axios = require("axios");
 const { parse } = require("dotenv");
-
 const checkDate = (checkString) => {
   var invoiceDate;
   var dateRegex = /(\d{1,4}([.\-\/])\d{1,2}([.\-\/])\d{1,4})/g;
@@ -10,11 +9,9 @@ const checkDate = (checkString) => {
     return "No Date Found";
   }
 
-  if (dateArray === null) {
-    return "No Date Found";
-  }
+  invoiceDate = dateArray[0];
+  return invoiceDate;
 };
-
 const checkPrice = (checkString) => {
   var invoicePrice;
   var priceRegex = /\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})/g;
@@ -67,7 +64,7 @@ const checkWebsite = async (checkString) => {
     },
     {
       headers: {
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer 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`,
       },
     }
   );
@@ -92,14 +89,14 @@ const checkEmail = async (checkString) => {
     },
     {
       headers: {
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer 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`,
       },
     }
   );
   if (invoiceAddress.data.choices[0].text.match(emailRegex) != null) {
     return invoiceAddress.data.choices[0].text.match(emailRegex)[0];
   } else {
-    return "No Website Found";
+    return "No Email Found";
   }
 };
 
@@ -110,6 +107,7 @@ const checkEmail = async (checkString) => {
 async function parseDataAsync(checkString) {
   var address = await checkAddress(checkString);
   var website = await checkWebsite(checkString);
+  console.log("running 1");
   var email = await checkEmail(checkString);
   var parsedObject = {
     invoiceDate: checkDate(checkString),
@@ -123,7 +121,8 @@ async function parseDataAsync(checkString) {
 
 async function parseString(checkString) {
   var finishedData = await parseDataAsync(checkString);
-  console.log(finishedData);
+  //   console.log(finishedData);
+  return finishedData;
 }
 
 module.exports = { parseString };

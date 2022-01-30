@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const databaseObject = require("../connection");
+const { parseString } = require("../utils/aiOutputParser");
 // const ObjectId = re;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -41,15 +42,24 @@ aiRoute.post(
     try {
       const result = await uploadFile(file.originalname, customerId);
       // updating the field for that user
+      console.log({ customerId });
+      console.log(file);
+      const myObj = {
+        customerId: "123",
+        fileName: "viet.pdf",
+      };
+      dbConnectToCollection
+        .collection("Files")
+        .insertOne(myObj, function (e, a) {
+          if (e) console.log(e);
+          // res.json(a);
+        });
+      // getting the document file
+      const text = await processDocument(`${file.originalname}`);
+      // console.log({ text });
+      const result_ = await parseString(text);
+      console.log({ result_ });
 
-      dbConnectToCollection.collection("Customers").updateOne(
-        { _id: customerId },
-        {
-          $set: {
-            filename: customerId + file.originalname,
-          },
-        }
-      );
       return res.json({ data: "upload file done!" });
     } catch (e) {
       return res.json({ message: e });
