@@ -42,7 +42,7 @@ const checkAddress = async (checkString) => {
     },
     {
       headers: {
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer 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`,
       },
     }
   );
