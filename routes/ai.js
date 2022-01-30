@@ -44,9 +44,15 @@ aiRoute.post(
       // updating the field for that user
       console.log({ customerId });
       console.log(file);
+
+      // getting the document file
+      const text = await processDocument(`${file.originalname}`);
+      // console.log({ text });
+      const result_ = await parseString(text);
+      console.log({ result_ });
       const myObj = {
         customerId: "123",
-        fileName: "viet.pdf",
+        ...result_,
       };
       dbConnectToCollection
         .collection("Files")
@@ -54,13 +60,7 @@ aiRoute.post(
           if (e) console.log(e);
           // res.json(a);
         });
-      // getting the document file
-      const text = await processDocument(`${file.originalname}`);
-      // console.log({ text });
-      const result_ = await parseString(text);
-      console.log({ result_ });
-
-      return res.json({ data: "upload file done!" });
+      return res.json({ data: result_ });
     } catch (e) {
       return res.json({ message: e });
     }
