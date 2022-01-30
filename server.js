@@ -11,6 +11,7 @@ server.use(express.json());
 server.use;
 server.use(require("./routes/customer"));
 server.use(require("./routes/task"));
+server.use(require("./routes/files"));
 server.use("/documents", require("./routes/ai"));
 server.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); 
